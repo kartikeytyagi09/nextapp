@@ -1,7 +1,8 @@
 import dbConnect from '@/lib/db';
-import UserModel from '@/models/user';
+import UserModel from '@/model/user';
 
 export async function POST(request: Request) {
+  // Connect to the database
   await dbConnect();
 
   try {
@@ -30,6 +31,7 @@ export async function POST(request: Request) {
         { status: 200 }
       );
     } else if (!isCodeNotExpired) {
+      // Code has expired
       return Response.json(
         {
           success: false,
@@ -39,6 +41,7 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     } else {
+      
       return Response.json(
         { success: false, message: 'Incorrect verification code' },
         { status: 400 }

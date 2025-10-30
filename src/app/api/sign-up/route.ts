@@ -1,5 +1,5 @@
 import dbConnect from '@/lib/db';
-import UserModel from '@/models/user';
+import UserModel from '@/model/user';
 import bcrypt from 'bcryptjs';
 import { sendVerificationEmail } from '@/helpers/sendVerificationEmail';
 
@@ -25,8 +25,7 @@ export async function POST(request: Request) {
     }
 
     const existingUserByEmail = await UserModel.findOne({ email });
-    
-    const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+    let verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 
     if (existingUserByEmail) {
       if (existingUserByEmail.isVerified) {

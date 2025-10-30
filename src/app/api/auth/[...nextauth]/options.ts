@@ -2,12 +2,12 @@ import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import dbConnect from '@/lib/db';
-import UserModel from '@/models/user';
+import UserModel from '@/model/user';
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      id: 'Credentials',
+      id: 'credentials',
       name: 'Credentials',
       credentials: {
         email: { label: 'Email', type: 'text' },
@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token._id = user._id?.toString(); // Convert ObjectId to string
+        token._id = user._id?.toString(); 
         token.isVerified = user.isVerified;
         token.isAcceptingMessages = user.isAcceptingMessages;
         token.username = user.username;
