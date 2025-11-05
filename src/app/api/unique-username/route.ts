@@ -12,9 +12,16 @@ export async function GET(request: Request) {
 
   try {
     const { searchParams } = new URL(request.url);
-    const queryParams = {
-      username: searchParams.get('username'),
-    };
+    const usernameParam = searchParams.get('username');
+
+    if (!usernameParam || usernameParam.trim() === '') {
+      return Response.json(
+        { success: false, message: 'Username query missing' },
+        { status: 400 }
+      );
+    }
+
+    const queryParams = { username: usernameParam };
 
     const result = UsernameQuerySchema.safeParse(queryParams);
 
