@@ -49,8 +49,9 @@ export default function SignUpForm() {
         setUsernameMessage('');
         try {
           const response = await axios.get<apiResponse>(
-            `/api/unique-username?username=${debouncedUsername}`
-          );
+              `/api/check-username-unique?username=${debouncedUsername}`
+           );
+
           setUsernameMessage(response.data.message);
         } catch (error) {
           const axiosError = error as AxiosError<apiResponse>;
