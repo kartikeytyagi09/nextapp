@@ -28,7 +28,7 @@ export default function SignUpForm() {
   const [usernameMessage, setUsernameMessage] = useState('');
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const debouncedUsername = useDebounce(username, 300);
+  const debouncedUsername = useDebounce(username, 4 00);
 
   const router = useRouter();
 //   const { toast } = useToast();
@@ -66,37 +66,27 @@ export default function SignUpForm() {
     checkUsernameUnique();
   }, [debouncedUsername]);
 
-  const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
-    setIsSubmitting(true);
-    try {
-      const response = await axios.post<apiResponse>('/api/sign-up', data);
+    const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
+      setIsSubmitting(true);
+      try {
+        const response = await axios.post<apiResponse>('/api/sign-up', data);
 
-      toast({
-        title: 'Success',
-        description: response.data.message,
-      });
+        toast.success(response.data.message || 'Sign up successful!');
+        router.replace(`/verify/${data.username}`);
 
-      router.replace(`/verify/${username}`);
+      } catch (error) {
+        console.error('Error during sign-up:', error);
+        const axiosError = error as AxiosError<apiResponse>;
+        const errorMessage =
+          axiosError.response?.data.message ||
+          'There was a problem with your sign-up. Please try again.';
 
-      setIsSubmitting(false);
-    } catch (error) {
-      console.error('Error during sign-up:', error);
+        toast.error(errorMessage);
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
 
-      const axiosError = error as AxiosError<apiResponse>;
-
-      // Default error message
-      let errorMessage = axiosError.response?.data.message;
-      ('There was a problem with your sign-up. Please try again.');
-
-      toast({
-        title: 'Sign Up Failed',
-        description: errorMessage,
-        variant: 'destructive',
-      });
-
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-800">
@@ -186,3 +176,7 @@ export default function SignUpForm() {
     </div>
   );
 }
+function useDebounce(username: string, arg1: number) {
+    throw new Error('Function not implemented.');
+}
+
