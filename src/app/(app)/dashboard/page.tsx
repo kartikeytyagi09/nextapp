@@ -85,13 +85,14 @@ function UserDashboard() {
   );
 
 
-  useEffect(() => {
-    if (!session || !session.user) return;
-
+useEffect(() => {
+  if (session?.user) {
     fetchMessages();
-
     fetchAcceptMessages();
-  }, [session, setValue, toast, fetchAcceptMessages, fetchMessages]);
+  }
+}, [session?.user, fetchMessages, fetchAcceptMessages]);
+
+
 
   //  switch change idhar hota ha
   const handleSwitchChange = async () => {
